@@ -11,43 +11,15 @@ import { AIChatbot } from './AIChatbot';
 import { AlertNotificationCenter } from './AlertNotificationCenter';
 import { PredictiveAnalytics } from './PredictiveAnalytics';
 import { Footer } from './Footer';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TrendingUpIcon, HomeIcon, CogIcon } from 'lucide-react';
 
 export const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
-      <Header />
-      
-      <main className="container mx-auto px-6 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-slate-100 border border-slate-300 rounded-xl p-2 shadow-lg">
-            <TabsTrigger 
-              value="overview" 
-              className="flex items-center gap-2 px-6 py-3 text-slate-700 font-semibold data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md rounded-lg transition-all duration-200 hover:bg-slate-50"
-            >
-              <HomeIcon className="h-5 w-5" />
-              System Overview
-            </TabsTrigger>
-            <TabsTrigger 
-              value="predictions" 
-              className="flex items-center gap-2 px-6 py-3 text-slate-700 font-semibold data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md rounded-lg transition-all duration-200 hover:bg-slate-50"
-            >
-              <TrendingUpIcon className="h-5 w-5" />
-              AI Predictions
-            </TabsTrigger>
-            <TabsTrigger 
-              value="equipment" 
-              className="flex items-center gap-2 px-6 py-3 text-slate-700 font-semibold data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md rounded-lg transition-all duration-200 hover:bg-slate-50"
-            >
-              <CogIcon className="h-5 w-5" />
-              Equipment Health
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-8">
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'overview':
+        return (
+          <div className="space-y-8">
             {/* System Overview Section */}
             <div className="animate-fade-in">
               <SystemOverview />
@@ -90,19 +62,34 @@ export const Dashboard = () => {
                 <EnergyConsumptionMonitor />
               </div>
             </div>
-          </TabsContent>
-
-          <TabsContent value="predictions" className="animate-fade-in">
+          </div>
+        );
+      case 'predictions':
+        return (
+          <div className="animate-fade-in">
             <PredictiveAnalytics />
-          </TabsContent>
-
-          <TabsContent value="equipment" className="animate-fade-in">
+          </div>
+        );
+      case 'equipment':
+        return (
+          <div className="animate-fade-in">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <EquipmentHealthMonitor />
               <EnergyConsumptionMonitor />
             </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+      
+      <main className="container mx-auto px-6 py-8">
+        {renderContent()}
       </main>
       
       <Footer />

@@ -2,10 +2,15 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { BellIcon, SettingsIcon, ActivityIcon } from 'lucide-react';
+import { BellIcon, SettingsIcon, ActivityIcon, HomeIcon, TrendingUpIcon, CogIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-export const Header = () => {
+interface HeaderProps {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+}
+
+export const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
   const [notifications, setNotifications] = useState(6);
   const { toast } = useToast();
 
@@ -24,6 +29,12 @@ export const Header = () => {
       duration: 3000,
     });
   };
+
+  const navigationItems = [
+    { id: 'overview', icon: HomeIcon, label: 'Overview' },
+    { id: 'predictions', icon: TrendingUpIcon, label: 'AI Predictions' },
+    { id: 'equipment', icon: CogIcon, label: 'Equipment' }
+  ];
 
   return (
     <header className="border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50">
@@ -47,8 +58,33 @@ export const Header = () => {
               </Badge>
             </div>
           </div>
-          
-          <div className="flex items-center space-x-3">
+
+          {/* Navigation and Action Buttons */}
+          <div className="flex items-center space-x-2">
+            {/* Navigation Tabs */}
+            <div className="flex items-center space-x-1 bg-slate-100 rounded-lg p-1 mr-4">
+              {navigationItems.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <Button
+                    key={item.id}
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setActiveTab(item.id)}
+                    className={`flex items-center gap-2 px-3 py-2 text-xs font-medium transition-all duration-200 ${
+                      activeTab === item.id
+                        ? 'bg-white text-slate-900 shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    }`}
+                  >
+                    <IconComponent className="h-3 w-3" />
+                    <span className="hidden lg:inline">{item.label}</span>
+                  </Button>
+                );
+              })}
+            </div>
+
+            {/* Action Buttons */}
             <Button 
               variant="outline" 
               size="icon" 
