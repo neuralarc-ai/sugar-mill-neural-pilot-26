@@ -1,85 +1,79 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 
 interface LoginProps {
   onLogin: () => void;
 }
 
 export const Login = ({ onLogin }: LoginProps) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [pin, setPin] = useState('');
   const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (username === '1234' && password === '1234') {
+  const handlePinComplete = (value: string) => {
+    setPin(value);
+    if (value === '1234') {
       toast({
-        title: "Login Successful",
+        title: "Access Granted",
         description: "Welcome to Neural Agent X Dashboard",
         duration: 2000,
       });
-      onLogin();
+      setTimeout(() => {
+        onLogin();
+      }, 500);
     } else {
       toast({
-        title: "Login Failed",
-        description: "Invalid credentials. Use 1234 for both username and password.",
+        title: "Access Denied",
+        description: "Invalid PIN. Please try again.",
         variant: "destructive",
         duration: 3000,
       });
+      setPin('');
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-8 space-y-6 bg-white shadow-xl border border-slate-200">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-slate-900">Neural Agent X</h1>
-          <p className="text-slate-600">AI Sugar Mill Intelligence</p>
+      <Card className="w-full max-w-sm p-8 space-y-8 bg-white shadow-2xl border border-slate-200 rounded-2xl">
+        <div className="text-center space-y-3">
+          <div className="w-16 h-16 mx-auto bg-slate-900 rounded-full flex items-center justify-center mb-4">
+            <div className="w-8 h-8 bg-white rounded-full"></div>
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900">Neural Agent X</h1>
+          <p className="text-slate-600 text-sm">AI Sugar Mill Intelligence</p>
         </div>
         
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="username" className="text-sm font-medium text-slate-700">
-              Username
+        <div className="space-y-6">
+          <div className="text-center space-y-3">
+            <label className="text-sm font-medium text-slate-700 block">
+              Enter Security PIN
             </label>
-            <Input
-              id="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter username (1234)"
-              className="w-full"
-              required
-            />
+            <InputOTP
+              maxLength={4}
+              value={pin}
+              onChange={(value) => {
+                setPin(value);
+                if (value.length === 4) {
+                  handlePinComplete(value);
+                }
+              }}
+              className="justify-center"
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} className="w-14 h-14 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                <InputOTPSlot index={1} className="w-14 h-14 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                <InputOTPSlot index={2} className="w-14 h-14 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                <InputOTPSlot index={3} className="w-14 h-14 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+              </InputOTPGroup>
+            </InputOTP>
           </div>
           
-          <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium text-slate-700">
-              Password
-            </label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password (1234)"
-              className="w-full"
-              required
-            />
+          <div className="text-center text-xs text-slate-500">
+            Demo PIN: 1234
           </div>
-          
-          <Button type="submit" className="w-full bg-slate-900 hover:bg-slate-800 text-white">
-            Login
-          </Button>
-        </form>
-        
-        <div className="text-center text-sm text-slate-500">
-          Demo credentials: Username: 1234, Password: 1234
         </div>
       </Card>
       
