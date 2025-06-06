@@ -3,39 +3,45 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Black & White Design System */
+/* Modern AI App Design System */
 
 @layer base {
   :root {
     --background: 255 255 255;
-    --foreground: 33 37 41;
+    --foreground: 15 23 42;
 
     --card: 255 255 255;
-    --card-foreground: 33 37 41;
+    --card-foreground: 15 23 42;
 
     --popover: 255 255 255;
-    --popover-foreground: 33 37 41;
+    --popover-foreground: 15 23 42;
 
-    --primary: 33 37 41;
+    --primary: 15 23 42;
     --primary-foreground: 255 255 255;
 
-    --secondary: 248 249 250;
-    --secondary-foreground: 33 37 41;
+    --secondary: 248 250 252;
+    --secondary-foreground: 15 23 42;
 
-    --muted: 248 249 250;
-    --muted-foreground: 108 117 125;
+    --muted: 248 250 252;
+    --muted-foreground: 100 116 139;
 
-    --accent: 233 236 239;
-    --accent-foreground: 33 37 41;
+    --accent: 241 245 249;
+    --accent-foreground: 15 23 42;
 
-    --destructive: 52 58 64;
+    --destructive: 239 68 68;
     --destructive-foreground: 255 255 255;
 
-    --border: 222 226 230;
-    --input: 222 226 230;
-    --ring: 33 37 41;
+    --border: 226 232 240;
+    --input: 226 232 240;
+    --ring: 15 23 42;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* AI App Accent Colors */
+    --yellow: 234 179 8;
+    --yellow-bright: 250 204 21;
+    --green: 34 197 94;
+    --green-bright: 74 222 128;
   }
 }
 
@@ -51,35 +57,104 @@
 }
 
 @layer components {
-  .gradient-dark {
-    background: linear-gradient(135deg, #212529 0%, #495057 100%);
+  /* Modern Gradients */
+  .gradient-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   }
   
-  .gradient-light {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  .gradient-accent-yellow {
+    background: linear-gradient(135deg, rgba(250, 204, 21, 0.1) 0%, rgba(234, 179, 8, 0.05) 100%);
   }
   
+  .gradient-accent-green {
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+  }
+
+  /* Status Indicators */
   .status-indicator {
     @apply w-3 h-3 rounded-full border-2;
   }
   
   .status-normal {
-    @apply bg-white border-gray-800;
+    @apply bg-green-400 border-green-500 shadow-sm shadow-green-400/20;
   }
   
   .status-warning {
-    @apply bg-gray-300 border-gray-600;
+    @apply bg-yellow-400 border-yellow-500 shadow-sm shadow-yellow-400/20;
   }
   
   .status-critical {
-    @apply bg-gray-800 border-gray-900;
+    @apply bg-red-400 border-red-500 shadow-sm shadow-red-400/20;
   }
 
-  .elegant-card {
-    @apply bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200;
+  /* Modern Cards */
+  .modern-card {
+    @apply bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 backdrop-blur-sm;
   }
 
-  .minimal-badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border;
+  .hero-card {
+    @apply bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 border border-slate-700 rounded-xl shadow-lg text-white;
   }
+
+  .accent-card-yellow {
+    @apply bg-gradient-to-br from-yellow-50 to-yellow-100/50 border border-yellow-200 rounded-xl;
+  }
+
+  .accent-card-green {
+    @apply bg-gradient-to-br from-green-50 to-green-100/50 border border-green-200 rounded-xl;
+  }
+
+  /* Modern Badges */
+  .modern-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border backdrop-blur-sm;
+  }
+
+  /* Glow Effects */
+  .glow-yellow {
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
+  }
+
+  .glow-green {
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+  }
+}
+
+/* Enhanced Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out;
 }

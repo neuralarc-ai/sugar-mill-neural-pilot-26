@@ -135,80 +135,90 @@ export const PredictiveAnalytics = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="space-y-8">
       {/* Health Prediction Chart */}
-      <Card className="lg:col-span-2 elegant-card animate-fade-in">
-        <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-3 text-lg font-medium">
-            <TrendingUpIcon className="h-5 w-5 text-gray-700" />
+      <Card className="modern-card animate-fade-in">
+        <CardHeader className="pb-6 border-b border-slate-100">
+          <CardTitle className="flex items-center gap-3 text-xl font-semibold text-slate-900">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <TrendingUpIcon className="h-5 w-5 text-green-700" />
+            </div>
             Equipment Health Prediction (30 Days)
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <TimeSeriesChart data={healthPrediction} />
-        </CardContent>
-      </Card>
-
-      {/* Health Gauge */}
-      <Card className="elegant-card animate-fade-in">
-        <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-3 text-lg font-medium">
-            <InfoIcon className="h-5 w-5 text-gray-700" />
-            Plant Health Score
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center">
-          <HealthGauge score={healthScore} />
-          <div className="mt-4 text-center">
-            <div className="text-2xl font-semibold text-gray-900">{Math.round(healthScore)}%</div>
-            <div className="text-sm text-gray-500">Overall Health</div>
-            <div className="text-xs text-gray-400 mt-1">
-              {healthScore >= 85 ? 'Excellent' : healthScore >= 75 ? 'Good' : 'Needs Attention'}
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="lg:col-span-3">
+              <TimeSeriesChart data={healthPrediction} />
+            </div>
+            <div className="lg:col-span-1 flex flex-col items-center justify-center space-y-4">
+              <HealthGauge score={healthScore} />
+              <div className="text-center">
+                <div className="text-3xl font-bold text-slate-900">{Math.round(healthScore)}%</div>
+                <div className="text-sm text-slate-500 font-medium">Overall Health</div>
+                <Badge className={`modern-badge mt-2 ${
+                  healthScore >= 85 ? 'bg-green-100 text-green-700 border-green-200' :
+                  healthScore >= 75 ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                  'bg-red-100 text-red-700 border-red-200'
+                }`}>
+                  {healthScore >= 85 ? 'Excellent' : healthScore >= 75 ? 'Good' : 'Needs Attention'}
+                </Badge>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Maintenance Recommendations */}
-      <Card className="lg:col-span-3 elegant-card animate-fade-in">
-        <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-3 text-lg font-medium">
-            <Cog className="h-5 w-5 text-gray-700" />
+      <Card className="modern-card animate-fade-in">
+        <CardHeader className="pb-6 border-b border-slate-100">
+          <CardTitle className="flex items-center gap-3 text-xl font-semibold text-slate-900">
+            <div className="p-2 bg-yellow-100 rounded-lg">
+              <Cog className="h-5 w-5 text-yellow-700" />
+            </div>
             Maintenance Schedule & Recommendations
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {maintenanceItems.map((item) => (
-              <Card key={item.id} className="border border-gray-200 hover:shadow-sm transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <Badge variant={getPriorityColor(item.priority)} className="minimal-badge">
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {maintenanceItems.map((item, index) => (
+              <Card key={item.id} className={`modern-card hover:shadow-lg transition-all duration-300 ${
+                item.priority === 'high' ? 'border-l-4 border-l-red-400' :
+                item.priority === 'medium' ? 'border-l-4 border-l-yellow-400' :
+                'border-l-4 border-l-green-400'
+              }`} style={{ animationDelay: `${index * 0.1}s` }}>
+                <CardContent className="p-5">
+                  <div className="flex items-start justify-between mb-4">
+                    <Badge className={`modern-badge ${
+                      item.priority === 'high' ? 'bg-red-100 text-red-700 border-red-200' :
+                      item.priority === 'medium' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                      'bg-green-100 text-green-700 border-green-200'
+                    }`}>
                       {getPriorityIcon(item.priority)} {item.priority.toUpperCase()}
                     </Badge>
-                    <span className="text-xs text-gray-500 font-medium">
+                    <span className="text-sm font-semibold text-slate-900 bg-slate-100 px-2 py-1 rounded-full">
                       {item.daysUntil} days
                     </span>
                   </div>
                   
-                  <h4 className="font-medium text-sm text-gray-900 mb-1">{item.equipment}</h4>
-                  <p className="text-xs text-gray-600 mb-2">{item.task}</p>
-                  <p className="text-xs text-gray-500 mb-3">{item.location}</p>
+                  <h4 className="font-semibold text-slate-900 mb-2">{item.equipment}</h4>
+                  <p className="text-sm text-slate-600 mb-2">{item.task}</p>
+                  <p className="text-xs text-slate-500 mb-4">{item.location}</p>
                   
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-gray-500">Duration:</span>
-                      <span className="font-medium text-gray-700">{item.estimatedDuration}</span>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-500">Duration:</span>
+                      <span className="font-medium text-slate-700">{item.estimatedDuration}</span>
                     </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-gray-500">Est. Cost:</span>
-                      <span className="font-medium text-gray-700">{item.cost}</span>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-500">Est. Cost:</span>
+                      <span className="font-medium text-slate-700">{item.cost}</span>
                     </div>
                   </div>
                   
                   <Progress 
                     value={Math.max(0, 100 - (item.daysUntil / 30) * 100)} 
-                    className="mt-3 h-1.5"
+                    className="mt-4 h-2"
                   />
                 </CardContent>
               </Card>

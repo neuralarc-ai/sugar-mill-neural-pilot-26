@@ -56,17 +56,26 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				gray: {
-					50: '#f8f9fa',
-					100: '#e9ecef',
-					200: '#dee2e6',
-					300: '#ced4da',
-					400: '#adb5bd',
-					500: '#6c757d',
-					600: '#495057',
-					700: '#343a40',
-					800: '#212529',
-					900: '#000000'
+				// AI App Colors
+				yellow: {
+					400: 'rgb(250 204 21)',
+					500: 'rgb(234 179 8)',
+				},
+				green: {
+					400: 'rgb(74 222 128)',
+					500: 'rgb(34 197 94)',
+				},
+				slate: {
+					50: '#f8fafc',
+					100: '#f1f5f9',
+					200: '#e2e8f0',
+					300: '#cbd5e1',
+					400: '#94a3b8',
+					500: '#64748b',
+					600: '#475569',
+					700: '#334155',
+					800: '#1e293b',
+					900: '#0f172a',
 				}
 			},
 			borderRadius: {
@@ -78,7 +87,7 @@ export default {
 				'fade-in': {
 					'0%': {
 						opacity: '0',
-						transform: 'translateY(10px)'
+						transform: 'translateY(20px)'
 					},
 					'100%': {
 						opacity: '1',
@@ -92,11 +101,20 @@ export default {
 					'50%': {
 						opacity: '0.8'
 					}
+				},
+				'slide-in': {
+					'0%': {
+						transform: 'translateX(-100%)'
+					},
+					'100%': {
+						transform: 'translateX(0)'
+					}
 				}
 			},
 			animation: {
-				'fade-in': 'fade-in 0.3s ease-out',
-				'pulse-subtle': 'pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+				'fade-in': 'fade-in 0.6s ease-out',
+				'pulse-subtle': 'pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+				'slide-in': 'slide-in 0.3s ease-out'
 			}
 		}
 	},

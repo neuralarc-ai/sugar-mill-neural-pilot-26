@@ -129,17 +129,26 @@ export const EquipmentStatus = () => {
   }, []);
 
   return (
-    <Card className="elegant-card animate-fade-in">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-3 text-lg font-medium">
-          <MonitorIcon className="h-5 w-5 text-gray-700" />
-          Equipment Status Monitor
-        </CardTitle>
+    <Card className="modern-card animate-fade-in">
+      <CardHeader className="pb-6 border-b border-slate-100">
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-3 text-xl font-semibold text-slate-900">
+            <div className="p-2 bg-slate-100 rounded-lg">
+              <MonitorIcon className="h-5 w-5 text-slate-700" />
+            </div>
+            Equipment Status Monitor
+          </CardTitle>
+          <Badge className="modern-badge bg-slate-100 text-slate-700 border-slate-200">
+            {equipmentData.length} Devices
+          </Badge>
+        </div>
       </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {equipmentData.map(equipment => (
-            <StatusCard key={equipment.id} equipment={equipment} />
+      <CardContent className="p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {equipmentData.map((equipment, index) => (
+            <div key={equipment.id} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+              <StatusCard equipment={equipment} />
+            </div>
           ))}
         </div>
       </CardContent>

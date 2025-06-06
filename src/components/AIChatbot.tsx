@@ -91,18 +91,24 @@ export const AIChatbot = () => {
   };
 
   return (
-    <Card className="h-[600px] flex flex-col elegant-card animate-fade-in">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-3 text-lg font-medium">
-          <SearchIcon className="h-5 w-5 text-gray-700" />
-          AI Assistant
-        </CardTitle>
-        <div className="flex flex-wrap gap-2">
-          {exampleQueries.map((query, index) => (
+    <Card className="h-[700px] flex flex-col modern-card animate-fade-in">
+      <CardHeader className="pb-4 border-b border-slate-100">
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-3 text-lg font-semibold text-slate-900">
+            <div className="p-2 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg">
+              <SearchIcon className="h-5 w-5 text-yellow-700" />
+            </div>
+            AI Assistant
+          </CardTitle>
+          <Badge className="modern-badge bg-green-100 text-green-700 border-green-200 animate-pulse-glow">
+            Online
+          </Badge>
+        </div>
+        <div className="flex flex-wrap gap-2 mt-4">
+          {exampleQueries.slice(0, 3).map((query, index) => (
             <Badge
               key={index}
-              variant="outline"
-              className="cursor-pointer hover:bg-gray-100 transition-colors text-xs border-gray-300"
+              className="modern-badge cursor-pointer hover:bg-slate-100 transition-colors text-xs border-slate-300 hover:border-slate-400"
               onClick={() => handleSendMessage(query)}
             >
               {query}
@@ -111,23 +117,23 @@ export const AIChatbot = () => {
         </div>
       </CardHeader>
       
-      <CardContent className="flex-1 flex flex-col p-4">
-        <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+      <CardContent className="flex-1 flex flex-col p-4 bg-gradient-to-b from-slate-50/50 to-white">
+        <div className="flex-1 overflow-y-auto space-y-4 mb-4 px-2">
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} animate-slide-up`}
             >
               <div
-                className={`max-w-[85%] rounded-lg p-3 ${
+                className={`max-w-[85%] rounded-2xl p-4 ${
                   message.type === 'user'
-                    ? 'bg-gray-900 text-white'
-                    : 'bg-gray-100 text-gray-900 border border-gray-200'
+                    ? 'bg-slate-900 text-white shadow-lg'
+                    : 'bg-white border border-slate-200 text-slate-900 shadow-sm'
                 }`}
               >
                 <div className="text-sm leading-relaxed">{message.content}</div>
-                <div className={`text-xs mt-1 ${
-                  message.type === 'user' ? 'text-gray-300' : 'text-gray-500'
+                <div className={`text-xs mt-2 ${
+                  message.type === 'user' ? 'text-slate-300' : 'text-slate-500'
                 }`}>
                   {formatTime(message.timestamp)}
                 </div>
@@ -136,12 +142,12 @@ export const AIChatbot = () => {
           ))}
           
           {isTyping && (
-            <div className="flex justify-start">
-              <div className="bg-gray-100 border border-gray-200 rounded-lg p-3">
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"></div>
-                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+            <div className="flex justify-start animate-slide-up">
+              <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
                 </div>
               </div>
             </div>
@@ -149,19 +155,19 @@ export const AIChatbot = () => {
           <div ref={messagesEndRef} />
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <Input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Ask about equipment status, maintenance, or optimization..."
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(inputValue)}
             disabled={isTyping}
-            className="border-gray-300"
+            className="border-slate-300 rounded-xl bg-white/80 backdrop-blur-sm"
           />
           <Button 
             onClick={() => handleSendMessage(inputValue)}
             disabled={isTyping || !inputValue.trim()}
-            className="bg-gray-900 hover:bg-gray-800"
+            className="bg-slate-900 hover:bg-slate-800 rounded-xl px-6"
           >
             Send
           </Button>
