@@ -9,6 +9,7 @@ import { ProcessParameterTracking } from './ProcessParameterTracking';
 import { EnergyConsumptionMonitor } from './EnergyConsumptionMonitor';
 import { AIChatbot } from './AIChatbot';
 import { AlertNotificationCenter } from './AlertNotificationCenter';
+import { Footer } from './Footer';
 
 export const Dashboard = () => {
   return (
@@ -59,6 +60,8 @@ export const Dashboard = () => {
           </div>
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 };
