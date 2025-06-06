@@ -23,26 +23,26 @@ export const Dashboard = () => {
       
       <main className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-white border border-slate-200 rounded-xl p-1 shadow-sm">
+          <TabsList className="grid w-full grid-cols-3 mb-8 bg-slate-100 border border-slate-300 rounded-xl p-2 shadow-lg">
             <TabsTrigger 
               value="overview" 
-              className="flex items-center gap-2 data-[state=active]:bg-slate-100 data-[state=active]:text-slate-900 rounded-lg transition-all duration-200"
+              className="flex items-center gap-2 px-6 py-3 text-slate-700 font-semibold data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md rounded-lg transition-all duration-200 hover:bg-slate-50"
             >
-              <HomeIcon className="h-4 w-4" />
+              <HomeIcon className="h-5 w-5" />
               System Overview
             </TabsTrigger>
             <TabsTrigger 
               value="predictions" 
-              className="flex items-center gap-2 data-[state=active]:bg-slate-100 data-[state=active]:text-slate-900 rounded-lg transition-all duration-200"
+              className="flex items-center gap-2 px-6 py-3 text-slate-700 font-semibold data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md rounded-lg transition-all duration-200 hover:bg-slate-50"
             >
-              <TrendingUpIcon className="h-4 w-4" />
+              <TrendingUpIcon className="h-5 w-5" />
               AI Predictions
             </TabsTrigger>
             <TabsTrigger 
               value="equipment" 
-              className="flex items-center gap-2 data-[state=active]:bg-slate-100 data-[state=active]:text-slate-900 rounded-lg transition-all duration-200"
+              className="flex items-center gap-2 px-6 py-3 text-slate-700 font-semibold data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md rounded-lg transition-all duration-200 hover:bg-slate-50"
             >
-              <CogIcon className="h-4 w-4" />
+              <CogIcon className="h-5 w-5" />
               Equipment Health
             </TabsTrigger>
           </TabsList>
