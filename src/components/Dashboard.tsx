@@ -1,10 +1,13 @@
 
 import React from 'react';
 import { Header } from './Header';
-import { EquipmentStatus } from './EquipmentStatus';
-import { AIChatbot } from './AIChatbot';
-import { PredictiveAnalytics } from './PredictiveAnalytics';
 import { SystemOverview } from './SystemOverview';
+import { LiveSensorDashboard } from './LiveSensorDashboard';
+import { EquipmentHealthMonitor } from './EquipmentHealthMonitor';
+import { ProcessParameterTracking } from './ProcessParameterTracking';
+import { EnergyConsumptionMonitor } from './EnergyConsumptionMonitor';
+import { AIChatbot } from './AIChatbot';
+import { AlertNotificationCenter } from './AlertNotificationCenter';
 
 export const Dashboard = () => {
   return (
@@ -17,22 +20,37 @@ export const Dashboard = () => {
           <SystemOverview />
         </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
-          {/* Equipment Status - Takes up 2.5 columns */}
-          <div className="xl:col-span-3 animate-slide-up">
-            <EquipmentStatus />
+        {/* Alert Notification Center */}
+        <div className="animate-slide-up">
+          <AlertNotificationCenter />
+        </div>
+
+        {/* Main Monitoring Grid */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          {/* Live Sensor Data - Full width on small, 2 columns on large */}
+          <div className="xl:col-span-2 space-y-8">
+            <div className="animate-slide-up">
+              <LiveSensorDashboard />
+            </div>
+            <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <ProcessParameterTracking />
+            </div>
           </div>
           
-          {/* AI Chatbot - Takes up 1.5 columns */}
-          <div className="xl:col-span-1 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          {/* AI Chatbot - Right sidebar */}
+          <div className="xl:col-span-1 animate-slide-up" style={{ animationDelay: '0.3s' }}>
             <AIChatbot />
           </div>
         </div>
-        
-        {/* Predictive Analytics - Full width */}
-        <div className="animate-slide-up" style={{ animationDelay: '0.4s' }}>
-          <PredictiveAnalytics />
+
+        {/* Equipment Health and Energy Monitoring */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            <EquipmentHealthMonitor />
+          </div>
+          <div className="animate-slide-up" style={{ animationDelay: '0.5s' }}>
+            <EnergyConsumptionMonitor />
+          </div>
         </div>
       </main>
     </div>

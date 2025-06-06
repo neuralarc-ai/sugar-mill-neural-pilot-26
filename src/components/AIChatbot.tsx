@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { SearchIcon } from 'lucide-react';
+import { SearchIcon, MessageSquareIcon } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -18,7 +18,7 @@ export const AIChatbot = () => {
     {
       id: '1',
       type: 'ai',
-      content: 'Hello! I\'m your Neural Agent X AI Assistant. I can help you monitor equipment, analyze performance trends, and provide maintenance recommendations. How can I assist you today?',
+      content: 'Hello! I\'m your Neural Agent X AI Assistant. I can help you with equipment monitoring, process optimization, maintenance scheduling, troubleshooting, and historical data analysis. How can I assist you today?',
       timestamp: new Date()
     }
   ]);
@@ -27,21 +27,31 @@ export const AIChatbot = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const exampleQueries = [
-    'Check bearing status',
-    'Optimize steam pressure', 
-    'Maintenance schedule',
-    'Performance analysis',
-    'Equipment efficiency'
+    'Check bearing temperature trends',
+    'Optimize Brix levels',
+    'Schedule maintenance',
+    'Analyze energy consumption',
+    'Troubleshoot vibration issue',
+    'Generate efficiency report'
   ];
 
   const aiResponses = {
-    'bearing': 'Bearing temperatures are currently within normal range (85°C). Bearing #1 shows stable operation with consistent lubrication levels. Next scheduled maintenance: 42 days. Recommend monitoring vibration patterns.',
-    'steam': 'Steam pressure is at 6.8 bar with warning status. Optimal operating range is 5.5-6.5 bar. Recommend reducing pressure by 0.3 bar for improved efficiency and safety margins.',
-    'maintenance': 'Upcoming scheduled maintenance: 1) Centrifuge bearing lubrication (3 days), 2) Evaporator cleaning cycle (7 days), 3) Clarifier inspection (12 days), 4) Boiler pressure valve check (18 days).',
-    'vibration': 'Crusher vibration levels at 2.3 mm/s are well within acceptable limits (<4.0 mm/s). Trend analysis shows stable operation over past 24 hours.',
-    'performance': 'Overall plant efficiency: 87%. Key metrics: Sugar recovery rate 89.2%, Energy consumption 15% below target, Equipment availability 94.5%. Recommend optimizing clarifier flow for 2% efficiency gain.',
-    'efficiency': 'Current operational efficiency: Mill extraction 97.2%, Crystallization 91.8%, Centrifuge recovery 98.1%. Identified opportunity in evaporator optimization for 3% energy savings.',
-    'default': 'Based on current operational data, all critical systems are functioning normally. Plant efficiency is at 87% with no immediate alerts. Would you like me to analyze a specific system or process?'
+    'bearing': 'Current bearing temperatures are within normal ranges. Bearing #1: 85.2°C (normal), Bearing #2: 87.1°C (slight increase noted). Recommend monitoring trend over next 4 hours. Historical data shows 12% efficiency improvement after last lubrication cycle.',
+    'temperature': 'Temperature monitoring shows: Main bearings averaging 86°C, Evaporator at 98.5°C (optimal), Steam systems at 165°C. All within operational parameters. Trending analysis indicates stable thermal management.',
+    'brix': 'Current Brix levels: Raw juice 16.8°Bx (target: 17.0°Bx), Syrup 65.2°Bx (optimal). Recommend minor adjustment to extraction pressure to achieve target raw juice Brix. Estimated 2.3% yield improvement possible.',
+    'maintenance': 'Upcoming maintenance schedule: 1) Centrifuge Unit #2 bearing replacement (3 days - HIGH PRIORITY), 2) Steam boiler inspection (7 days), 3) Clarifier pump maintenance (15 days). RUL analysis suggests advancing centrifuge maintenance by 1 day.',
+    'vibration': 'Vibration analysis complete. Current levels: Crusher 2.3 mm/s (normal), Centrifuge #1 3.1 mm/s (slight increase). Frequency analysis shows bearing wear signature in Centrifuge #1. Recommend oil analysis and bearing inspection within 48 hours.',
+    'energy': 'Energy consumption analysis: Current total load 1.8 MW, Daily consumption 41.3 MWh, Cost $4,956. Efficiency opportunities identified: 1) Mill drive load optimization (8% savings), 2) Pump scheduling (5% savings). Projected monthly savings: $12,400.',
+    'steam': 'Steam system status: Pressure 6.8 bar (warning - above optimal 6.5 bar), Temperature 165°C, Flow rate 45 t/h. Recommend reducing pressure by 0.3 bar for optimal efficiency and safety. Fuel consumption can be reduced by 6%.',
+    'ph': 'pH monitoring: Clarified juice 7.2 pH (target: 7.0), slightly alkaline. Recommend 0.2 pH reduction using lime adjustment. This will improve downstream crystallization efficiency by approximately 3%.',
+    'flow': 'Flow rate monitoring: Juice flow 245.8 m³/h (normal), Syrup flow 42.1 m³/h (optimal). No flow restrictions detected. Pump efficiency at 87%. Consider variable speed drive optimization for 4% energy savings.',
+    'pressure': 'Pressure systems: Steam 6.8 bar (high), Vacuum -0.85 bar (optimal), Process lines 2.1-3.4 bar (normal). Steam pressure trending upward - recommend immediate operator attention to avoid safety system activation.',
+    'optimize': 'Process optimization recommendations: 1) Reduce steam pressure 0.3 bar (6% fuel savings), 2) Adjust extraction speed +2% (yield improvement), 3) Fine-tune pH to 7.0 (crystallization efficiency), 4) Implement predictive pump scheduling (energy savings).',
+    'efficiency': 'Overall plant efficiency: 89.2% (excellent). Key metrics: Mill extraction 97.1%, Clarification 94.8%, Evaporation 91.5%, Crystallization 88.7%. Top opportunity: Crystallization process optimization could increase overall efficiency to 91.5%.',
+    'report': 'Generating comprehensive performance report... Key findings: 1) Equipment availability 96.2%, 2) Energy efficiency +8% vs baseline, 3) Maintenance compliance 98%, 4) Quality parameters within spec 99.1%. Full report available for download.',
+    'troubleshoot': 'Troubleshooting assistant activated. Please describe the specific issue: equipment behavior, error codes, unusual sounds, parameter deviations, or performance concerns. I can provide step-by-step diagnostics and corrective actions.',
+    'schedule': 'Maintenance scheduling optimized using predictive analytics: Critical path items prioritized, resource allocation balanced, minimal production impact. Next 30 days: 8 scheduled tasks, 2 condition-based interventions recommended.',
+    'default': 'I can help you with: Equipment monitoring and diagnostics, Process parameter optimization, Predictive maintenance scheduling, Energy consumption analysis, Quality control guidance, Troubleshooting assistance, Historical data queries, and Performance reporting. What would you like to explore?'
   };
 
   useEffect(() => {
@@ -50,12 +60,24 @@ export const AIChatbot = () => {
 
   const getAIResponse = (userMessage: string): string => {
     const message = userMessage.toLowerCase();
-    if (message.includes('bearing')) return aiResponses.bearing;
-    if (message.includes('steam') || message.includes('pressure')) return aiResponses.steam;
-    if (message.includes('maintenance') || message.includes('schedule')) return aiResponses.maintenance;
-    if (message.includes('vibration')) return aiResponses.vibration;
-    if (message.includes('performance') || message.includes('analyze')) return aiResponses.performance;
-    if (message.includes('efficiency') || message.includes('optimize')) return aiResponses.efficiency;
+    
+    // Multiple keyword matching for more sophisticated responses
+    if (message.includes('bearing') || message.includes('lubrication')) return aiResponses.bearing;
+    if (message.includes('temperature') || message.includes('temp') || message.includes('heat')) return aiResponses.temperature;
+    if (message.includes('brix') || message.includes('concentration') || message.includes('sugar')) return aiResponses.brix;
+    if (message.includes('maintenance') || message.includes('schedule') || message.includes('service')) return aiResponses.maintenance;
+    if (message.includes('vibration') || message.includes('shake') || message.includes('oscillation')) return aiResponses.vibration;
+    if (message.includes('energy') || message.includes('power') || message.includes('consumption') || message.includes('kw')) return aiResponses.energy;
+    if (message.includes('steam') || message.includes('boiler') || message.includes('pressure')) return aiResponses.steam;
+    if (message.includes('ph') || message.includes('acid') || message.includes('alkaline')) return aiResponses.ph;
+    if (message.includes('flow') || message.includes('pump') || message.includes('rate')) return aiResponses.flow;
+    if (message.includes('pressure') && !message.includes('steam')) return aiResponses.pressure;
+    if (message.includes('optimize') || message.includes('improve') || message.includes('enhance')) return aiResponses.optimize;
+    if (message.includes('efficiency') || message.includes('performance') || message.includes('productivity')) return aiResponses.efficiency;
+    if (message.includes('report') || message.includes('analysis') || message.includes('data')) return aiResponses.report;
+    if (message.includes('troubleshoot') || message.includes('problem') || message.includes('issue') || message.includes('fault')) return aiResponses.troubleshoot;
+    if (message.includes('schedule') || message.includes('plan') || message.includes('timeline')) return aiResponses.schedule;
+    
     return aiResponses.default;
   };
 
@@ -83,7 +105,7 @@ export const AIChatbot = () => {
       
       setMessages(prev => [...prev, aiResponse]);
       setIsTyping(false);
-    }, 1200 + Math.random() * 800);
+    }, 1500 + Math.random() * 1000);
   };
 
   const formatTime = (date: Date) => {
@@ -91,24 +113,22 @@ export const AIChatbot = () => {
   };
 
   return (
-    <Card className="h-[700px] flex flex-col modern-card animate-fade-in">
+    <Card className="h-[800px] flex flex-col modern-card">
       <CardHeader className="pb-4 border-b border-slate-100">
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-3 text-lg font-semibold text-slate-900">
-            <div className="p-2 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg">
-              <SearchIcon className="h-5 w-5 text-yellow-700" />
-            </div>
-            AI Assistant
-          </CardTitle>
-          <Badge className="modern-badge bg-green-100 text-green-700 border-green-200 animate-pulse-glow">
+        <CardTitle className="flex items-center gap-3 text-lg font-semibold text-slate-900">
+          <div className="p-2 bg-slate-100 rounded-lg">
+            <MessageSquareIcon className="h-5 w-5 text-slate-700" />
+          </div>
+          AI Process Assistant
+          <Badge className="bg-green-400 text-black border-green-400 animate-pulse">
             Online
           </Badge>
-        </div>
-        <div className="flex flex-wrap gap-2 mt-4">
-          {exampleQueries.slice(0, 3).map((query, index) => (
+        </CardTitle>
+        <div className="grid grid-cols-2 gap-2 mt-4">
+          {exampleQueries.slice(0, 4).map((query, index) => (
             <Badge
               key={index}
-              className="modern-badge cursor-pointer hover:bg-slate-100 transition-colors text-xs border-slate-300 hover:border-slate-400"
+              className="modern-badge cursor-pointer hover:bg-slate-100 transition-colors text-xs border-slate-300 hover:border-slate-400 text-center justify-center"
               onClick={() => handleSendMessage(query)}
             >
               {query}
@@ -145,9 +165,9 @@ export const AIChatbot = () => {
             <div className="flex justify-start animate-slide-up">
               <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
                 </div>
               </div>
             </div>
@@ -159,7 +179,7 @@ export const AIChatbot = () => {
           <Input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask about equipment status, maintenance, or optimization..."
+            placeholder="Ask about equipment, processes, maintenance, or optimization..."
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(inputValue)}
             disabled={isTyping}
             className="border-slate-300 rounded-xl bg-white/80 backdrop-blur-sm"
