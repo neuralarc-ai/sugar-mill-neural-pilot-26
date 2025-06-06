@@ -2,6 +2,7 @@
 import React from 'react';
 import { Header } from './Header';
 import { SystemOverview } from './SystemOverview';
+import { LiveStatistics } from './LiveStatistics';
 import { LiveSensorDashboard } from './LiveSensorDashboard';
 import { EquipmentHealthMonitor } from './EquipmentHealthMonitor';
 import { ProcessParameterTracking } from './ProcessParameterTracking';
@@ -18,6 +19,11 @@ export const Dashboard = () => {
         {/* System Overview Section */}
         <div className="animate-fade-in">
           <SystemOverview />
+        </div>
+
+        {/* Live Performance Statistics */}
+        <div className="animate-slide-up">
+          <LiveStatistics />
         </div>
 
         {/* Alert Notification Center */}
