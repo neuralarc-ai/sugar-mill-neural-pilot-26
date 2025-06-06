@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { HealthGauge } from './HealthGauge';
 import { TimeSeriesChart } from './TimeSeriesChart';
-import { TrendingUpIcon, InfoIcon } from 'lucide-react';
+import { TrendingUpIcon, InfoIcon, Cog } from 'lucide-react';
 
 interface MaintenanceItem {
   id: string;
@@ -174,7 +173,7 @@ export const PredictiveAnalytics = () => {
       <Card className="lg:col-span-3 elegant-card animate-fade-in">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-3 text-lg font-medium">
-            <CogIcon className="h-5 w-5 text-gray-700" />
+            <Cog className="h-5 w-5 text-gray-700" />
             Maintenance Schedule & Recommendations
           </CardTitle>
         </CardHeader>
