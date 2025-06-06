@@ -47,28 +47,29 @@ export const Login = ({ onLogin }: LoginProps) => {
         </div>
         
         <div className="space-y-6">
-          <div className="text-center space-y-3">
+          <div className="text-center space-y-4">
             <label className="text-sm font-medium text-slate-700 block">
               Enter Security PIN
             </label>
-            <InputOTP
-              maxLength={4}
-              value={pin}
-              onChange={(value) => {
-                setPin(value);
-                if (value.length === 4) {
-                  handlePinComplete(value);
-                }
-              }}
-              className="justify-center"
-            >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} className="w-14 h-14 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
-                <InputOTPSlot index={1} className="w-14 h-14 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
-                <InputOTPSlot index={2} className="w-14 h-14 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
-                <InputOTPSlot index={3} className="w-14 h-14 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
-              </InputOTPGroup>
-            </InputOTP>
+            <div className="flex justify-center">
+              <InputOTP
+                maxLength={4}
+                value={pin}
+                onChange={(value) => {
+                  setPin(value);
+                  if (value.length === 4) {
+                    handlePinComplete(value);
+                  }
+                }}
+              >
+                <InputOTPGroup className="gap-4">
+                  <InputOTPSlot index={0} className="w-16 h-16 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                  <InputOTPSlot index={1} className="w-16 h-16 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                  <InputOTPSlot index={2} className="w-16 h-16 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                  <InputOTPSlot index={3} className="w-16 h-16 text-xl font-semibold border-2 border-slate-300 rounded-lg focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
           </div>
           
           <div className="text-center text-xs text-slate-500">
