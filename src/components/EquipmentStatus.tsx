@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { StatusCard } from './StatusCard';
+import { MonitorIcon } from 'lucide-react';
 
 export interface EquipmentData {
   id: string;
@@ -10,45 +11,77 @@ export interface EquipmentData {
   status: 'normal' | 'warning' | 'critical';
   threshold: { warning: number; critical: number };
   history: number[];
+  icon: string;
+  location: string;
 }
 
 export const EquipmentStatus = () => {
   const [equipmentData, setEquipmentData] = useState<EquipmentData[]>([
     {
-      id: 'bearing-temp',
-      name: 'Bearing Temperature',
+      id: 'bearing-temp-1',
+      name: 'Bearing Temperature #1',
       value: 85,
       unit: '°C',
       status: 'normal',
       threshold: { warning: 100, critical: 115 },
-      history: [82, 84, 83, 85, 87, 85, 86, 85]
+      history: [82, 84, 83, 85, 87, 85, 86, 85],
+      icon: 'thermometer',
+      location: 'Mill House A'
     },
     {
-      id: 'vibration',
-      name: 'Vibration Levels',
+      id: 'vibration-crusher',
+      name: 'Crusher Vibration',
       value: 2.3,
       unit: 'mm/s',
       status: 'normal',
       threshold: { warning: 4.0, critical: 5.0 },
-      history: [2.1, 2.2, 2.4, 2.3, 2.5, 2.3, 2.2, 2.3]
+      history: [2.1, 2.2, 2.4, 2.3, 2.5, 2.3, 2.2, 2.3],
+      icon: 'gauge',
+      location: 'Crushing Station'
     },
     {
       id: 'steam-pressure',
-      name: 'Steam Pressure',
-      value: 6.5,
+      name: 'Boiler Steam Pressure',
+      value: 6.8,
       unit: 'bar',
       status: 'warning',
-      threshold: { warning: 7.0, critical: 8.0 },
-      history: [6.2, 6.4, 6.3, 6.5, 6.7, 6.5, 6.6, 6.5]
+      threshold: { warning: 6.5, critical: 8.0 },
+      history: [6.2, 6.4, 6.3, 6.5, 6.7, 6.8, 6.6, 6.8],
+      icon: 'gauge',
+      location: 'Boiler Room'
     },
     {
       id: 'centrifuge-rpm',
-      name: 'Centrifuge RPM',
+      name: 'Centrifuge Speed',
       value: 1650,
       unit: 'RPM',
       status: 'normal',
       threshold: { warning: 1750, critical: 1800 },
-      history: [1620, 1640, 1630, 1650, 1670, 1650, 1660, 1650]
+      history: [1620, 1640, 1630, 1650, 1670, 1650, 1660, 1650],
+      icon: 'cog',
+      location: 'Sugar House'
+    },
+    {
+      id: 'evaporator-temp',
+      name: 'Evaporator Temperature',
+      value: 98,
+      unit: '°C',
+      status: 'normal',
+      threshold: { warning: 105, critical: 110 },
+      history: [95, 97, 96, 98, 99, 98, 97, 98],
+      icon: 'thermometer',
+      location: 'Evaporation Plant'
+    },
+    {
+      id: 'clarifier-flow',
+      name: 'Clarifier Flow Rate',
+      value: 245,
+      unit: 'm³/h',
+      status: 'normal',
+      threshold: { warning: 280, critical: 300 },
+      history: [240, 242, 244, 245, 247, 245, 246, 245],
+      icon: 'monitor',
+      location: 'Clarification Plant'
     }
   ]);
 
@@ -56,23 +89,23 @@ export const EquipmentStatus = () => {
     const interval = setInterval(() => {
       setEquipmentData(prevData => 
         prevData.map(equipment => {
-          // Simulate realistic data fluctuations
           const baseValue = equipment.value;
-          const variation = (Math.random() - 0.5) * 0.1; // ±5% variation
+          const variation = (Math.random() - 0.5) * 0.08;
           let newValue = baseValue + (baseValue * variation);
           
-          // Ensure values stay within realistic ranges
-          if (equipment.id === 'bearing-temp') {
-            newValue = Math.max(80, Math.min(120, newValue));
-          } else if (equipment.id === 'vibration') {
+          // Keep values within realistic ranges
+          if (equipment.id.includes('temp')) {
+            newValue = Math.max(75, Math.min(120, newValue));
+          } else if (equipment.id.includes('vibration')) {
             newValue = Math.max(0.1, Math.min(5.0, newValue));
-          } else if (equipment.id === 'steam-pressure') {
-            newValue = Math.max(3, Math.min(8, newValue));
-          } else if (equipment.id === 'centrifuge-rpm') {
+          } else if (equipment.id.includes('pressure')) {
+            newValue = Math.max(3, Math.min(8.5, newValue));
+          } else if (equipment.id.includes('rpm')) {
             newValue = Math.max(1200, Math.min(1800, newValue));
+          } else if (equipment.id.includes('flow')) {
+            newValue = Math.max(200, Math.min(320, newValue));
           }
 
-          // Determine status based on thresholds
           let status: 'normal' | 'warning' | 'critical' = 'normal';
           if (newValue >= equipment.threshold.critical) {
             status = 'critical';
@@ -80,7 +113,6 @@ export const EquipmentStatus = () => {
             status = 'warning';
           }
 
-          // Update history (keep last 8 values)
           const newHistory = [...equipment.history.slice(1), newValue];
 
           return {
@@ -91,16 +123,16 @@ export const EquipmentStatus = () => {
           };
         })
       );
-    }, 3000); // Update every 3 seconds
+    }, 4000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <Card className="animate-fade-in">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <div className="w-4 h-4 gradient-blue rounded"></div>
+    <Card className="elegant-card animate-fade-in">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-3 text-lg font-medium">
+          <MonitorIcon className="h-5 w-5 text-gray-700" />
           Equipment Status Monitor
         </CardTitle>
       </CardHeader>

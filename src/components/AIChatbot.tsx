@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { SearchIcon } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -17,7 +18,7 @@ export const AIChatbot = () => {
     {
       id: '1',
       type: 'ai',
-      content: 'Hello! I\'m your Sugar Mill AI Assistant. I can help you monitor equipment, optimize processes, and provide maintenance recommendations. How can I assist you today?',
+      content: 'Hello! I\'m your Neural Agent X AI Assistant. I can help you monitor equipment, analyze performance trends, and provide maintenance recommendations. How can I assist you today?',
       timestamp: new Date()
     }
   ]);
@@ -27,16 +28,20 @@ export const AIChatbot = () => {
 
   const exampleQueries = [
     'Check bearing status',
-    'Optimize steam pressure',
-    'Maintenance schedule'
+    'Optimize steam pressure', 
+    'Maintenance schedule',
+    'Performance analysis',
+    'Equipment efficiency'
   ];
 
   const aiResponses = {
-    'bearing': 'Current bearing temperature is 85°C, within normal range. All bearings are operating smoothly. Next maintenance scheduled in 45 days.',
-    'steam': 'Steam pressure is at 6.5 bar with a warning status. I recommend reducing pressure to 6.0 bar for optimal efficiency and safety.',
-    'maintenance': 'Upcoming maintenance tasks: 1) Bearing lubrication (5 days), 2) Steam valve inspection (12 days), 3) Centrifuge cleaning (18 days).',
-    'vibration': 'Vibration levels are at 2.3 mm/s, well within acceptable limits. No immediate action required.',
-    'default': 'I understand you\'re asking about mill operations. Based on current data, all systems are running normally. Is there a specific piece of equipment you\'d like me to analyze?'
+    'bearing': 'Bearing temperatures are currently within normal range (85°C). Bearing #1 shows stable operation with consistent lubrication levels. Next scheduled maintenance: 42 days. Recommend monitoring vibration patterns.',
+    'steam': 'Steam pressure is at 6.8 bar with warning status. Optimal operating range is 5.5-6.5 bar. Recommend reducing pressure by 0.3 bar for improved efficiency and safety margins.',
+    'maintenance': 'Upcoming scheduled maintenance: 1) Centrifuge bearing lubrication (3 days), 2) Evaporator cleaning cycle (7 days), 3) Clarifier inspection (12 days), 4) Boiler pressure valve check (18 days).',
+    'vibration': 'Crusher vibration levels at 2.3 mm/s are well within acceptable limits (<4.0 mm/s). Trend analysis shows stable operation over past 24 hours.',
+    'performance': 'Overall plant efficiency: 87%. Key metrics: Sugar recovery rate 89.2%, Energy consumption 15% below target, Equipment availability 94.5%. Recommend optimizing clarifier flow for 2% efficiency gain.',
+    'efficiency': 'Current operational efficiency: Mill extraction 97.2%, Crystallization 91.8%, Centrifuge recovery 98.1%. Identified opportunity in evaporator optimization for 3% energy savings.',
+    'default': 'Based on current operational data, all critical systems are functioning normally. Plant efficiency is at 87% with no immediate alerts. Would you like me to analyze a specific system or process?'
   };
 
   useEffect(() => {
@@ -49,6 +54,8 @@ export const AIChatbot = () => {
     if (message.includes('steam') || message.includes('pressure')) return aiResponses.steam;
     if (message.includes('maintenance') || message.includes('schedule')) return aiResponses.maintenance;
     if (message.includes('vibration')) return aiResponses.vibration;
+    if (message.includes('performance') || message.includes('analyze')) return aiResponses.performance;
+    if (message.includes('efficiency') || message.includes('optimize')) return aiResponses.efficiency;
     return aiResponses.default;
   };
 
@@ -66,7 +73,6 @@ export const AIChatbot = () => {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI thinking time
     setTimeout(() => {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -77,11 +83,7 @@ export const AIChatbot = () => {
       
       setMessages(prev => [...prev, aiResponse]);
       setIsTyping(false);
-    }, 1000 + Math.random() * 1000);
-  };
-
-  const handleExampleClick = (query: string) => {
-    handleSendMessage(query);
+    }, 1200 + Math.random() * 800);
   };
 
   const formatTime = (date: Date) => {
@@ -89,10 +91,10 @@ export const AIChatbot = () => {
   };
 
   return (
-    <Card className="h-[600px] flex flex-col animate-fade-in">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <div className="w-4 h-4 gradient-green rounded"></div>
+    <Card className="h-[600px] flex flex-col elegant-card animate-fade-in">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-3 text-lg font-medium">
+          <SearchIcon className="h-5 w-5 text-gray-700" />
           AI Assistant
         </CardTitle>
         <div className="flex flex-wrap gap-2">
@@ -100,8 +102,8 @@ export const AIChatbot = () => {
             <Badge
               key={index}
               variant="outline"
-              className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-              onClick={() => handleExampleClick(query)}
+              className="cursor-pointer hover:bg-gray-100 transition-colors text-xs border-gray-300"
+              onClick={() => handleSendMessage(query)}
             >
               {query}
             </Badge>
@@ -117,14 +119,16 @@ export const AIChatbot = () => {
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] rounded-lg p-3 ${
+                className={`max-w-[85%] rounded-lg p-3 ${
                   message.type === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-muted-foreground'
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-gray-100 text-gray-900 border border-gray-200'
                 }`}
               >
-                <div className="text-sm">{message.content}</div>
-                <div className="text-xs opacity-70 mt-1">
+                <div className="text-sm leading-relaxed">{message.content}</div>
+                <div className={`text-xs mt-1 ${
+                  message.type === 'user' ? 'text-gray-300' : 'text-gray-500'
+                }`}>
                   {formatTime(message.timestamp)}
                 </div>
               </div>
@@ -133,11 +137,11 @@ export const AIChatbot = () => {
           
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-muted text-muted-foreground rounded-lg p-3">
+              <div className="bg-gray-100 border border-gray-200 rounded-lg p-3">
                 <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 bg-current rounded-full animate-pulse"></div>
-                  <div className="w-2 h-2 bg-current rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-                  <div className="w-2 h-2 bg-current rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
                 </div>
               </div>
             </div>
@@ -152,10 +156,12 @@ export const AIChatbot = () => {
             placeholder="Ask about equipment status, maintenance, or optimization..."
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(inputValue)}
             disabled={isTyping}
+            className="border-gray-300"
           />
           <Button 
             onClick={() => handleSendMessage(inputValue)}
             disabled={isTyping || !inputValue.trim()}
+            className="bg-gray-900 hover:bg-gray-800"
           >
             Send
           </Button>

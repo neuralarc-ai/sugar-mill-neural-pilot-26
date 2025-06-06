@@ -1,14 +1,6 @@
 
-import React, { createContext, useContext } from 'react';
-
-const ThemeContext = createContext({});
+import React from 'react';
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ThemeContext.Provider value={{}}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <>{children}</>;
 };
-
-export const useTheme = () => useContext(ThemeContext);

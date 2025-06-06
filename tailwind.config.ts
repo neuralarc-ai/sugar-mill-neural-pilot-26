@@ -20,7 +20,7 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'sans-serif'],
+				sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -56,24 +56,17 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				industrial: {
-					blue: '#1e40af',
-					'blue-light': '#3b82f6',
-					green: '#059669',
-					'green-light': '#10b981',
-					warning: '#f59e0b',
-					danger: '#dc2626',
-					gray: '#64748b'
-				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				gray: {
+					50: '#f8f9fa',
+					100: '#e9ecef',
+					200: '#dee2e6',
+					300: '#ced4da',
+					400: '#adb5bd',
+					500: '#6c757d',
+					600: '#495057',
+					700: '#343a40',
+					800: '#212529',
+					900: '#000000'
 				}
 			},
 			borderRadius: {
@@ -82,30 +75,6 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			keyframes: {
-				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
-				},
-				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
-				},
-				'pulse': {
-					'0%, 100%': {
-						opacity: '1'
-					},
-					'50%': {
-						opacity: '0.5'
-					}
-				},
 				'fade-in': {
 					'0%': {
 						opacity: '0',
@@ -115,13 +84,19 @@ export default {
 						opacity: '1',
 						transform: 'translateY(0)'
 					}
+				},
+				'pulse-subtle': {
+					'0%, 100%': {
+						opacity: '1'
+					},
+					'50%': {
+						opacity: '0.8'
+					}
 				}
 			},
 			animation: {
-				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out',
-				'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-				'fade-in': 'fade-in 0.3s ease-out'
+				'fade-in': 'fade-in 0.3s ease-out',
+				'pulse-subtle': 'pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
 			}
 		}
 	},

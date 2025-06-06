@@ -24,24 +24,18 @@ export const TimeSeriesChart = ({ data }: TimeSeriesChartProps) => {
     return `${x},${y}`;
   }).join(' ');
 
-  const getGradientColor = (health: number) => {
-    if (health >= 80) return '#10b981';
-    if (health >= 60) return '#f59e0b';
-    return '#ef4444';
-  };
-
   return (
     <div className="w-full overflow-x-auto">
       <svg width={width} height={height} className="w-full h-full min-w-[600px]">
         <defs>
           <linearGradient id="healthGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+            <stop offset="0%" stopColor="#212529" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#212529" stopOpacity="0" />
           </linearGradient>
         </defs>
         
         {/* Grid lines */}
-        {[0, 25, 50, 75, 100].map(value => {
+        {[70, 75, 80, 85, 90, 95].map(value => {
           const y = height - padding - ((value - minHealth) / healthRange) * (height - 2 * padding);
           return (
             <g key={value}>
@@ -50,15 +44,15 @@ export const TimeSeriesChart = ({ data }: TimeSeriesChartProps) => {
                 y1={y}
                 x2={width - padding}
                 y2={y}
-                stroke="hsl(var(--border))"
+                stroke="#dee2e6"
                 strokeDasharray="2,2"
-                opacity="0.5"
+                opacity="0.6"
               />
               <text
                 x={padding - 10}
                 y={y + 4}
                 fontSize="10"
-                fill="hsl(var(--muted-foreground))"
+                fill="#6c757d"
                 textAnchor="end"
               >
                 {value}%
@@ -77,7 +71,7 @@ export const TimeSeriesChart = ({ data }: TimeSeriesChartProps) => {
         <polyline
           points={points}
           fill="none"
-          stroke="#3b82f6"
+          stroke="#212529"
           strokeWidth="3"
           strokeLinejoin="round"
           strokeLinecap="round"
@@ -93,11 +87,11 @@ export const TimeSeriesChart = ({ data }: TimeSeriesChartProps) => {
               key={index}
               cx={x}
               cy={y}
-              r="4"
-              fill={getGradientColor(item.health)}
+              r="3"
+              fill="#212529"
               stroke="white"
               strokeWidth="2"
-              className="hover:r-6 transition-all cursor-pointer"
+              className="hover:r-5 transition-all cursor-pointer"
             >
               <title>{`Day ${item.day}: ${item.health}% health`}</title>
             </circle>
@@ -105,7 +99,7 @@ export const TimeSeriesChart = ({ data }: TimeSeriesChartProps) => {
         })}
         
         {/* X-axis labels */}
-        {data.filter((_, index) => index % 5 === 0).map((item, index, filteredData) => {
+        {data.filter((_, index) => index % 5 === 0).map((item, index) => {
           const originalIndex = index * 5;
           const x = padding + (originalIndex / (data.length - 1)) * (width - 2 * padding);
           return (
@@ -114,7 +108,7 @@ export const TimeSeriesChart = ({ data }: TimeSeriesChartProps) => {
               x={x}
               y={height - 10}
               fontSize="10"
-              fill="hsl(var(--muted-foreground))"
+              fill="#6c757d"
               textAnchor="middle"
             >
               Day {item.day}

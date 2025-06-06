@@ -23,21 +23,42 @@ export const SparklineChart = ({ data, status }: SparklineChartProps) => {
 
   const getStrokeColor = () => {
     switch (status) {
-      case 'normal': return '#10b981';
-      case 'warning': return '#f59e0b';
-      case 'critical': return '#ef4444';
-      default: return '#64748b';
+      case 'normal': return '#212529';
+      case 'warning': return '#6c757d';
+      case 'critical': return '#000000';
+      default: return '#adb5bd';
+    }
+  };
+
+  const getStrokeWidth = () => {
+    switch (status) {
+      case 'critical': return '3';
+      case 'warning': return '2';
+      default: return '2';
     }
   };
 
   return (
-    <div className="w-full h-10 bg-muted/30 rounded">
+    <div className="w-full h-10 bg-gray-50 rounded border">
       <svg width={width} height={height} className="w-full h-full">
+        <defs>
+          <linearGradient id={`gradient-${status}`} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor={getStrokeColor()} stopOpacity="0.1" />
+            <stop offset="100%" stopColor={getStrokeColor()} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        
+        {/* Area under curve */}
+        <path
+          d={`M${padding},${height - padding} L${points} L${width - padding},${height - padding} Z`}
+          fill={`url(#gradient-${status})`}
+        />
+        
         <polyline
           points={points}
           fill="none"
           stroke={getStrokeColor()}
-          strokeWidth="2"
+          strokeWidth={getStrokeWidth()}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
